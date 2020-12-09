@@ -21,6 +21,7 @@ parameters:
     displayName: Version
     type: string
     default: ""
+    required: false
   - name: CleanBuild
     displayName: Clean Up Builds
     type: boolean
@@ -61,7 +62,9 @@ stages:
       - job: build
         workspace:
             clean: all
-        steps:
+        steps:  
+          - checkout: UnityProject
+            lfs: true
           - checkout: Creator
             lfs: true
           - checkout: self
@@ -74,6 +77,8 @@ stages:
           - template: copy-project-files.yml@Templates
 
           - template: setup-unity-project.yml@Templates
+            parameters:
+              CheckoutUnityProject: false
 
           - template: run-tests.yml@Templates
 
