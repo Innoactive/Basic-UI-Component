@@ -148,7 +148,13 @@ namespace Innoactive.Creator.UX
             // Update the UI.
             SetupTrainingDependantUI();
 
+            // Subscribe to controller events.
             SubscribeToControllerEvents();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromControllerEvents();
         }
 
         private void Update()
@@ -172,6 +178,11 @@ namespace Innoactive.Creator.UX
         private void SubscribeToControllerEvents()
         {
             FindObjectOfType<SpectatorController>().ToggleUIOverlayVisibility += ToggleUIVisibility;
+        }
+        
+        private void UnsubscribeFromControllerEvents()
+        {
+            FindObjectOfType<SpectatorController>().ToggleUIOverlayVisibility -= ToggleUIVisibility;
         }
 
         private void ToggleUIVisibility(object sender, EventArgs args)
