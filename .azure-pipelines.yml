@@ -21,7 +21,6 @@ parameters:
     displayName: Version
     type: string
     default: ""
-    required: false
   - name: CleanBuild
     displayName: Clean Up Builds
     type: boolean
