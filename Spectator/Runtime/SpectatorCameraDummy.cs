@@ -4,15 +4,13 @@ namespace Innoactive.Creator.UX
 {
     /// <summary>
     /// Dummy object which can be used to set viewpoints into the scene.
-    /// Will remove its camera component on runtime start and can be used in combination with <see cref="SpectatorCamera"/>.
+    /// Will remove its camera component on runtime and can be used in combination with <see cref="SpectatorCamera"/>.
     /// </summary>
     [ExecuteInEditMode]
     public class SpectatorCameraDummy : MonoBehaviour
     {
         [SerializeField]
-        private string cameraName = "Spectator Camera";
-
-        public string CameraName => cameraName;
+        public string CameraName = "Spectator Camera";
 
         public void Awake()
         {
@@ -23,12 +21,9 @@ namespace Innoactive.Creator.UX
                     gameObject.AddComponent<Camera>();
                 }
             }
-            else
+            else if (Application.isPlaying)
             {
-                if (Application.isPlaying)
-                {
-                    Destroy(gameObject.GetComponent<Camera>());
-                }
+                Destroy(gameObject.GetComponent<Camera>());
             }
         }
     }

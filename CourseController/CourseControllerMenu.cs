@@ -22,6 +22,10 @@ namespace Innoactive.Creator.UX
     public class CourseControllerMenu : MonoBehaviour
     {
         #region UI elements
+        [Tooltip("Menu panel.")]
+        [SerializeField]
+        private RectTransform menuPanel = null;
+        
         [Tooltip("Chapter picker dropdown.")]
         [SerializeField]
         private Dropdown chapterPicker = null;
@@ -143,6 +147,8 @@ namespace Innoactive.Creator.UX
             
             // Update the UI.
             SetupTrainingDependantUI();
+
+            SubscribeToControllerEvents();
         }
 
         private void Update()
@@ -161,6 +167,16 @@ namespace Innoactive.Creator.UX
                 displayedStep = currentStep;
                 UpdateDisplayedStep(currentStep);
             }
+        }
+        
+        private void SubscribeToControllerEvents()
+        {
+            FindObjectOfType<SpectatorController>().ToggleUIOverlayVisibility += ToggleUIVisibility;
+        }
+
+        private void ToggleUIVisibility(object sender, EventArgs args)
+        {
+            menuPanel.gameObject.SetActive(!menuPanel.gameObject.activeSelf);
         }
 
         private void UpdateDisplayedStep(IStep step)

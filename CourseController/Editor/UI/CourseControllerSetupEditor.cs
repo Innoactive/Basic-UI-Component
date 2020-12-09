@@ -23,30 +23,38 @@ namespace Innoactive.CreatorEditor.UX
         
         private ICourseController[] availableCourseControllers;
         private string[] availableCourseControllerNames;
-        private static int selectedIndex = 0;
-        private static bool useCustomPrefab;
-        private static GameObject customPrefab = null;
+        private GameObject customPrefab = null;
+        private int selectedIndex = 0;
+        private bool useCustomPrefab;
 
-        private static List<Type> currentRequiredComponents = new List<Type>();
+        private List<Type> currentRequiredComponents = new List<Type>();
         
         private void OnEnable()
         {
             courseControllerProperty = serializedObject.FindProperty("courseControllerQualifiedName");
             useCustomPrefabProperty = serializedObject.FindProperty("useCustomPrefab");
             customPrefabProperty = serializedObject.FindProperty("customPrefab");
-            
+
+            customPrefab = (GameObject) customPrefabProperty.objectReferenceValue;
             setupObject = (CourseControllerSetup) serializedObject.targetObject;
             
             availableCourseControllers = ReflectionUtils.GetFinalImplementationsOf<ICourseController>()
                 .Select(c => (ICourseController) ReflectionUtils.CreateInstanceOfType(c)).OrderByDescending(controller => controller.Priority).ToArray();
-            
+
             availableCourseControllerNames = availableCourseControllers.Select(controller => controller.Name).ToArray();
+            
+            selectedIndex = availableCourseControllers.Select(controller => controller.GetType().AssemblyQualifiedName).ToList().IndexOf(courseControllerProperty.stringValue);
+            if (selectedIndex < 0)
+            {
+                selectedIndex = 0;
+            }
+            
             currentRequiredComponents = availableCourseControllers[selectedIndex].GetRequiredSetupComponents();
         }
 
         public override void OnInspectorGUI()
         {
-            GUI.enabled = !useCustomPrefab && !Application.isPlaying;
+            GUI.enabled = useCustomPrefab == false && Application.isPlaying == false;
             bool prevUseCustomPrefab = useCustomPrefab;
             int prevIndex = selectedIndex;
             
@@ -61,50 +69,46 @@ namespace Innoactive.CreatorEditor.UX
                 customPrefab = EditorGUILayout.ObjectField("Custom prefab", customPrefab, typeof(GameObject), false) as GameObject;
                 if (useCustomPrefab != prevUseCustomPrefab)
                 {
-                    ClearRequiredComponents();
+                    RemoveComponents(currentRequiredComponents);
+                    currentRequiredComponents = new List<Type>();
                 }
+                customPrefabProperty.objectReferenceValue = customPrefab;
             }
-            else if (prevIndex != selectedIndex || HasComponents() == false)
+            else if (prevIndex != selectedIndex || HasComponents(currentRequiredComponents) == false || useCustomPrefab != prevUseCustomPrefab)
             {
-                ClearRequiredComponents();
-                AddRequiredComponents();
+                RemoveComponents(currentRequiredComponents);
+                currentRequiredComponents = availableCourseControllers[selectedIndex].GetRequiredSetupComponents();
+                AddComponents(currentRequiredComponents);
             }
 
             useCustomPrefabProperty.boolValue = useCustomPrefab;
-            customPrefabProperty.objectReferenceValue = customPrefab;
             courseControllerProperty.stringValue = availableCourseControllers[selectedIndex].GetType().AssemblyQualifiedName;
             
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void ClearRequiredComponents()
+        private void RemoveComponents(List<Type> components)
         {
             foreach (Type component in currentRequiredComponents)
             {
                 DestroyImmediate(setupObject.GetComponent(component));
             }
-            
-            currentRequiredComponents = new List<Type>();
         }
 
-        private void AddRequiredComponents()
+        private void AddComponents(List<Type> components)
         {
-            List<Type> requiredComponents = availableCourseControllers[selectedIndex].GetRequiredSetupComponents();
-            
-            if (requiredComponents != null)
+            if (components != null)
             {
-                currentRequiredComponents = requiredComponents;
-                foreach (Type requiredComponent in requiredComponents)
+                foreach (Type requiredComponent in components)
                 {
                     setupObject.gameObject.AddComponent(requiredComponent);
                 }
             }
         }
 
-        private bool HasComponents()
+        private bool HasComponents(List<Type> components)
         {
-            List<Component> components = setupObject.gameObject.GetComponents<Component>().ToList();
-            return currentRequiredComponents.Except(components.Select(c => c.GetType())).Any() == false;
+            return components.Except(setupObject.gameObject.GetComponents<Component>().ToList().Select(c => c.GetType())).Any() == false;
         }
     }
 }

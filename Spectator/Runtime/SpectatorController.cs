@@ -23,7 +23,7 @@ namespace Innoactive.Creator.UX
         /// </summary>
         protected virtual void HandleInput()
         {
-            if (Input.GetKeyDown(SpectatorSettings.Instance.ToggleOveray))
+            if (Input.GetKeyDown(SpectatorSettings.Instance.ToggleOverlay))
             {
                 ToggleUIOverlayVisibility?.Invoke(this, new EventArgs());
             }

@@ -14,6 +14,6 @@ namespace Innoactive.Creator.UX
         /// <summary>
         /// Hotkey to toggle UI overlay.
         /// </summary>
-        public KeyCode ToggleOveray = KeyCode.W;
+        public KeyCode ToggleOverlay = KeyCode.W;
     }
 }

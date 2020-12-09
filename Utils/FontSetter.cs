@@ -6,7 +6,7 @@ namespace Innoactive.Creator.BaseTemplate
     /// <summary>
     /// Utility component to style all child UI text elements.
     /// </summary>
-    public class UIStyler : MonoBehaviour
+    public class FontSetter : MonoBehaviour
     {
         [Tooltip("The font used in all child UI elements.")]
         [SerializeField]

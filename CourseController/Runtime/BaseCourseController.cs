@@ -12,12 +12,18 @@ namespace Innoactive.Creator.UX
     /// </summary>
     public abstract class BaseCourseController : ICourseController
     {
+        /// <inheritdoc />
         public abstract string Name { get; }
 
+        /// <inheritdoc />
         public abstract int Priority { get; }
 
+        /// <summary>
+        /// Name of the course controller prefab.
+        /// </summary>
         protected abstract string PrefabName { get; }
 
+        /// <inheritdoc />
         public virtual GameObject GetCourseControllerPrefab()
         {
             string filter = $"{PrefabName} t:Prefab";
@@ -32,6 +38,7 @@ namespace Innoactive.Creator.UX
             return AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
         }
 
+        /// <inheritdoc />
         public virtual List<Type> GetRequiredSetupComponents() 
         {
             return new List<Type>();

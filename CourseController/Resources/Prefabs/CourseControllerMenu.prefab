@@ -3804,6 +3804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc553f9d8ae95844a64a46a4411b040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuPanel: {fileID: 8866169436744885476}
   chapterPicker: {fileID: 8759222442591261430}
   trainingStateIndicator: {fileID: 8755515883026932460}
   stepName: {fileID: 8755653783159839350}
