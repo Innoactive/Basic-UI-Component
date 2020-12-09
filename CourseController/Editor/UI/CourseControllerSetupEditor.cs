@@ -91,7 +91,7 @@ namespace Innoactive.CreatorEditor.UX
         {
             foreach (Type component in currentRequiredComponents)
             {
-                DestroyImmediate(setupObject.GetComponent(component));
+                DestroyImmediate(setupObject.GetComponent(component), true);
             }
         }
 
