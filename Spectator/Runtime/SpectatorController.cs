@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Innoactive.Creator.UX
 {
@@ -23,10 +24,32 @@ namespace Innoactive.Creator.UX
         /// </summary>
         protected virtual void HandleInput()
         {
-            if (Input.GetKeyDown(SpectatorSettings.Instance.ToggleOverlay))
+            if (IsKeyPressed(SpectatorSettings.Instance.ToggleOverlay))
             {
                 ToggleUIOverlayVisibility?.Invoke(this, new EventArgs());
             }
+        }
+        
+        /// <summary>
+        /// Is the given <paramref name="key"/> pressed.
+        /// </summary>
+        /// <param name="key">Key to check</param>
+        /// <returns>True, if key is pressed.</returns>
+        /// <remarks>Use this for the new input system.</remarks>
+        protected bool IsKeyPressed(Key key)
+        {
+            return Keyboard.current[key].wasPressedThisFrame;
+        }
+        
+        /// <summary>
+        /// Is the given <paramref name="key"/> pressed.
+        /// </summary>
+        /// <param name="key">Key to check</param>
+        /// <returns>True, if key is pressed.</returns>
+        /// <remarks>Use this for the old input system.</remarks>
+        protected bool IsKeyPressed(KeyCode key)
+        {
+            return Input.GetKeyDown(key);
         }
     }
 }

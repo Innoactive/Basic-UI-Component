@@ -100,6 +100,8 @@ namespace Innoactive.Creator.UX
         private ICourse trainingCourse;
         private IChapter lastDisplayedChapter;
 
+        private SpectatorController spectatorController;
+
         private void Awake()
         {
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
@@ -177,12 +179,13 @@ namespace Innoactive.Creator.UX
         
         private void SubscribeToControllerEvents()
         {
-            FindObjectOfType<SpectatorController>().ToggleUIOverlayVisibility += ToggleUIVisibility;
+            spectatorController = FindObjectOfType<SpectatorController>();
+            spectatorController.ToggleUIOverlayVisibility += ToggleUIVisibility;
         }
         
         private void UnsubscribeFromControllerEvents()
         {
-            FindObjectOfType<SpectatorController>().ToggleUIOverlayVisibility -= ToggleUIVisibility;
+            spectatorController.ToggleUIOverlayVisibility -= ToggleUIVisibility;
         }
 
         private void ToggleUIVisibility(object sender, EventArgs args)

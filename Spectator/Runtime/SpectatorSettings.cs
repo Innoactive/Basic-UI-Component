@@ -1,5 +1,10 @@
 ﻿using Innoactive.Creator.Core.Runtime.Utils;
 using UnityEngine;
+#if ENABLE_LEGACY_INPUT_MANAGER
+using Key = UnityEngine.KeyCode;
+#else
+using UnityEngine.InputSystem;
+#endif
 
 namespace Innoactive.Creator.UX
 {
@@ -14,6 +19,6 @@ namespace Innoactive.Creator.UX
         /// <summary>
         /// Hotkey to toggle UI overlay.
         /// </summary>
-        public KeyCode ToggleOverlay = KeyCode.W;
+        public Key ToggleOverlay = Key.W;
     }
 }
