@@ -1,8 +1,5 @@
 ﻿using System;
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
 
 namespace Innoactive.Creator.UX
 {
@@ -31,19 +28,6 @@ namespace Innoactive.Creator.UX
                 ToggleUIOverlayVisibility?.Invoke(this, new EventArgs());
             }
         }
-
-#if ENABLE_INPUT_SYSTEM
-        /// <summary>
-        /// Is the given <paramref name="key"/> pressed.
-        /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <returns>True, if key is pressed.</returns>
-        /// <remarks>Use this for the new input system.</remarks>
-        protected bool IsKeyPressed(Key key)
-        {
-            return Keyboard.current[key].wasPressedThisFrame;
-        }
-#endif
         
         /// <summary>
         /// Is the given <paramref name="key"/> pressed.
@@ -53,7 +37,10 @@ namespace Innoactive.Creator.UX
         /// <remarks>Use this for the old input system.</remarks>
         protected bool IsKeyPressed(KeyCode key)
         {
+#if ENABLE_LEGACY_INPUT_MANAGER
             return Input.GetKeyDown(key);
+#endif
+            return false;
         }
     }
 }
