@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+#endif
 
 namespace Innoactive.Creator.UX
 {
@@ -29,7 +31,8 @@ namespace Innoactive.Creator.UX
                 ToggleUIOverlayVisibility?.Invoke(this, new EventArgs());
             }
         }
-        
+
+#if ENABLE_INPUT_SYSTEM
         /// <summary>
         /// Is the given <paramref name="key"/> pressed.
         /// </summary>
@@ -40,6 +43,7 @@ namespace Innoactive.Creator.UX
         {
             return Keyboard.current[key].wasPressedThisFrame;
         }
+#endif
         
         /// <summary>
         /// Is the given <paramref name="key"/> pressed.
