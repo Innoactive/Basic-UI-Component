@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 namespace Innoactive.Creator.UX
@@ -26,16 +23,7 @@ namespace Innoactive.Creator.UX
         /// <inheritdoc />
         public virtual GameObject GetCourseControllerPrefab()
         {
-            string filter = $"{PrefabName} t:Prefab";
-            string[] prefabsGUIDs = AssetDatabase.FindAssets(filter, null);
-
-            if (prefabsGUIDs.Any() == false)
-            {
-                throw new FileNotFoundException($"No prefabs found that match \"{PrefabName}\".");
-            }
-
-            string assetPath = AssetDatabase.GUIDToAssetPath(prefabsGUIDs.First());
-            return AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+            return Resources.Load<GameObject>($"Prefabs/{PrefabName}");
         }
 
         /// <inheritdoc />
