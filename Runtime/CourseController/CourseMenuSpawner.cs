@@ -2,21 +2,22 @@
 
 namespace Innoactive.Creator.UX
 {
+    /// <summary>
+    /// Spawns a course menu in the scene.
+    /// </summary>
     public class CourseMenuSpawner : MonoBehaviour
     {
+        [Tooltip("Default menu prefab")]
         [SerializeField]
         private GameObject defaultPrefab;
         
+        [Tooltip("Use a custom menu prefab instead of default")]
         [SerializeField] 
         private bool useCustomPrefab;
         
+        [Tooltip("Custom menu prefab")]
         [SerializeField]
         private GameObject customPrefab;
-
-        [SerializeField] 
-        private bool keepOneMenu = true;
-
-        private GameObject currentMenu;
 
         private void Start()
         {
@@ -25,13 +26,12 @@ namespace Innoactive.Creator.UX
 
         private void Init()
         {
-            Debug.Log("Default: " + defaultPrefab);
             GameObject prefab;
             if (useCustomPrefab)
             {
                 if (customPrefab == null)
                 {
-                    Debug.LogError("Custom prefab in Course Menu Spawner is not set.");
+                    Debug.LogError("Custom prefab in CourseMenuSpawner is not set.");
                     return;
                 }
 
@@ -42,7 +42,7 @@ namespace Innoactive.Creator.UX
                 prefab = defaultPrefab;
             }
 
-            currentMenu = Instantiate(prefab);
+            Instantiate(prefab);
         }
 
         public void SetDefaultPrefab(GameObject prefab)

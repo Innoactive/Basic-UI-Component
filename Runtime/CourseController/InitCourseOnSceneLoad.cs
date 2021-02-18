@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace Innoactive.Creator.UX
 {
+    /// <summary>
+    /// Initializes the <see cref="CourseRunner"/> with the current selected course on scene start.
+    /// </summary>
     public class InitCourseOnSceneLoad : MonoBehaviour
     {
-        private ICourse trainingCourse;
-
         private void OnEnable()
         {
             InitTraining();
@@ -19,6 +20,8 @@ namespace Innoactive.Creator.UX
             // Load training course from a file.
             string coursePath = RuntimeConfigurator.Instance.GetSelectedCourse();
 
+            ICourse trainingCourse;
+            
             // Try to load the in the [TRAINING_CONFIGURATION] selected training course.
             try
             {
@@ -26,8 +29,7 @@ namespace Innoactive.Creator.UX
             }
             catch (Exception exception)
             {
-                Debug.LogError($"{exception.GetType().Name}, {exception.Message}\n{exception.StackTrace}",
-                    RuntimeConfigurator.Instance.gameObject);
+                Debug.LogError($"{exception.GetType().Name}, {exception.Message}\n{exception.StackTrace}", RuntimeConfigurator.Instance.gameObject);
                 return;
             }
 
