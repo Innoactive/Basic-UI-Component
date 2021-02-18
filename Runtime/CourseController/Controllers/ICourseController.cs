@@ -30,5 +30,7 @@ namespace Innoactive.Creator.UX
         /// </summary>
         /// <returns>List of component types.</returns>
         List<Type> GetRequiredSetupComponents();
+
+        void SetupDone(GameObject courseControllerObject);
     }
 }
