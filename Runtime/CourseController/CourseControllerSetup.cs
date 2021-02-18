@@ -23,10 +23,13 @@ namespace Innoactive.Creator.UX
         private GameObject customPrefab;
 #pragma warning restore 0649
         
+        /// <summary>
+        /// Current used course controller.
+        /// </summary>
         public ICourseController CurrentCourseController { get; protected set; }
         
         /// <summary>
-        /// Enforced provider will be use.
+        /// Enforced course controller will be use.
         /// </summary>
         protected static ICourseController enforcedCourseController = null;
 
