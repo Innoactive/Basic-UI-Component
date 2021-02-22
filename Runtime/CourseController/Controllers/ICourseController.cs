@@ -31,6 +31,11 @@ namespace Innoactive.Creator.UX
         /// <returns>List of component types.</returns>
         List<Type> GetRequiredSetupComponents();
 
-        void SetupDone(GameObject courseControllerObject);
+        /// <summary>
+        /// Handles post-setup logic.
+        /// Should be called after all components are added and object is initialized.
+        /// </summary>
+        /// <param name="courseControllerObject">Actual course controller object</param>
+        void HandlePostSetup(GameObject courseControllerObject);
     }
 }

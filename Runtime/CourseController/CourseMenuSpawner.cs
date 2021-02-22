@@ -7,15 +7,12 @@ namespace Innoactive.Creator.UX
     /// </summary>
     public class CourseMenuSpawner : MonoBehaviour
     {
-        [Tooltip("Default menu prefab")]
         [SerializeField]
         private GameObject defaultPrefab;
         
-        [Tooltip("Use a custom menu prefab instead of default")]
         [SerializeField] 
         private bool useCustomPrefab;
         
-        [Tooltip("Custom menu prefab")]
         [SerializeField]
         private GameObject customPrefab;
 
@@ -45,6 +42,10 @@ namespace Innoactive.Creator.UX
             Instantiate(prefab);
         }
 
+        /// <summary>
+        /// Overrides the default prefab.
+        /// </summary>
+        /// <param name="prefab">New default prefab.</param>
         public void SetDefaultPrefab(GameObject prefab)
         {
             defaultPrefab = prefab;

@@ -42,7 +42,7 @@ namespace Innoactive.Creator.UX
         {
             CreateCourseController();
             AddComponents(CurrentCourseController.GetRequiredSetupComponents());
-            CurrentCourseController.SetupDone(gameObject);
+            CurrentCourseController.HandlePostSetup(gameObject);
         }
 
         private void CreateCourseController()

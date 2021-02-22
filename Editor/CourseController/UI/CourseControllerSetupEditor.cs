@@ -93,7 +93,7 @@ namespace Innoactive.CreatorEditor.UX
                 RemoveComponents(currentRequiredComponents);
                 currentRequiredComponents = availableCourseControllers[selectedIndex].GetRequiredSetupComponents();
                 AddComponents(currentRequiredComponents);
-                availableCourseControllers[selectedIndex].SetupDone(setupObject.gameObject);
+                availableCourseControllers[selectedIndex].HandlePostSetup(setupObject.gameObject);
             }
 
             useCustomPrefabProperty.boolValue = useCustomPrefab;

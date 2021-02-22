@@ -9,6 +9,9 @@ namespace Innoactive.Creator.UX
     /// </summary>
     public abstract class UIBaseCourseController : BaseCourseController
     {
+        /// <summary>
+        /// Name of the course controller menu prefab.
+        /// </summary>
         public abstract string CourseMenuPrefabName { get; }
         
         /// <summary>
@@ -26,7 +29,7 @@ namespace Innoactive.Creator.UX
         }
 
         /// <inheritdoc />
-        public override void SetupDone(GameObject courseControllerObject)
+        public override void HandlePostSetup(GameObject courseControllerObject)
         {
             courseControllerObject.GetComponent<CourseMenuSpawner>().SetDefaultPrefab(GetCourseMenuPrefab());
         }

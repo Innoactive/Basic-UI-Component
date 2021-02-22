@@ -1,5 +1,4 @@
-﻿using System;
-using Innoactive.Creator.UX;
+﻿using Innoactive.Creator.UX;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,18 +30,17 @@ namespace Innoactive.CreatorEditor.UX
         {
             GUI.enabled = false;
             EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((CourseMenuSpawner)target), typeof(CourseMenuSpawner), false);
-            EditorGUILayout.ObjectField("Default prefab", defaultPrefabProperty.objectReferenceValue, typeof(GameObject), false);
+            EditorGUILayout.ObjectField(new GUIContent("Default prefab", "Default menu prefab. If you want to change the menu that is spawned, set a custom prefab instead."), defaultPrefabProperty.objectReferenceValue, typeof(GameObject), false);
             
             GUI.enabled = useCustomPrefab == false && Application.isPlaying == false;
-            bool prevUseCustomPrefab = useCustomPrefab;
             
             GUI.enabled = !Application.isPlaying;
 
-            useCustomPrefab = EditorGUILayout.Toggle("Use custom prefab", useCustomPrefabProperty.boolValue);
+            useCustomPrefab = EditorGUILayout.Toggle(new GUIContent("Use custom prefab", "Use a custom menu prefab instead of default"), useCustomPrefabProperty.boolValue);
             
             if (useCustomPrefab)
             {
-                customPrefab = EditorGUILayout.ObjectField("Custom prefab", customPrefabProperty.objectReferenceValue, typeof(GameObject), false) as GameObject;
+                customPrefab = EditorGUILayout.ObjectField(new GUIContent("Custom prefab", "Custom menu prefab"), customPrefabProperty.objectReferenceValue, typeof(GameObject), false) as GameObject;
                 customPrefabProperty.objectReferenceValue = customPrefab;
             }
             

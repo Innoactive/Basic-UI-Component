@@ -36,12 +36,8 @@ namespace Innoactive.Creator.UX
             return new List<Type>();
         }
 
-        /// <summary>
-        /// Handles post-setup logic.
-        /// Should be called after all components are added and object is initialized.
-        /// </summary>
-        /// <param name="courseControllerObject"></param>
-        public virtual void SetupDone(GameObject courseControllerObject)
+        /// <inheritdoc />
+        public virtual void HandlePostSetup(GameObject courseControllerObject)
         {
             // do nothing
         }
