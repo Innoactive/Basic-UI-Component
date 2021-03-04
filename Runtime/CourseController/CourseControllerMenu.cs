@@ -91,9 +91,10 @@ namespace Innoactive.Creator.UX
         [SerializeField]
         private string fallbackLanguage = "EN";
 
-        private List<string> localizationFileNames;
+        protected List<string> localizationFileNames;
 
-        private string selectedLanguage;
+        protected string selectedLanguage;
+        
         private FieldInfo skipStepPickerEditorValueField;
 
         private IStep displayedStep;
@@ -265,11 +266,20 @@ namespace Innoactive.Creator.UX
             {
                 // Parse the names without extension (.json) of all localization files.
                 // The name should be a valid two-letter ISO code (which also can be three letters long).
-                availableLocalizations = FileManager.FetchStreamingAssetsFilesAt(pathToLocalizations, "*.json")
-                    .ToList()
-                    .ConvertAll(Path.GetFileNameWithoutExtension)
-                    .Where(f => f.Length <= 3 && f.TryConvertToTwoLetterIsoCode(out f))
-                    .ToList();
+                ICourseController controller = FindObjectOfType<CourseControllerSetup>().CurrentCourseController;
+                LocalizationConfig config = null;
+                if (controller is ILocalizationProvider localizationProvider)
+                {
+                    config = localizationProvider.LocalizationConfig;
+                }
+                else
+                {
+                    config = Resources.Load<LocalizationConfig>("Localization/Default");
+                }
+
+                Dictionary<string, string> parameters = new Dictionary<string, string>();
+                parameters.Add(LocalizationReader.KeyCourseName, CourseRunner.Current.Data.Name);
+                availableLocalizations = LocalizationUtils.FindAvailableLanguagesForConfig(config, parameters);
             }
             catch (Exception exception)
             {
@@ -280,7 +290,7 @@ namespace Innoactive.Creator.UX
             return availableLocalizations;
         }
 
-        private void LoadLocalizationForTraining(string coursePath)
+        protected virtual void LoadLocalizationForTraining(string coursePath)
         {
             string courseName = Path.GetFileNameWithoutExtension(coursePath);
 
