@@ -17,7 +17,7 @@ namespace Innoactive.Creator.UX
         public abstract int Priority { get; }
 
         /// <inheritdoc />
-        public virtual LocalizationConfig LocalizationConfig { get; } = Resources.Load<LocalizationConfig>("Localization/Default");
+        public virtual LocalizationConfig LocalizationConfig { get; } = Resources.Load<LocalizationConfig>(LocalizationConfig.DefaultLocalizationConfig);
 
         /// <summary>
         /// Name of the course controller prefab.
