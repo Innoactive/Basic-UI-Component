@@ -1,4 +1,7 @@
-﻿namespace Innoactive.CreatorEditor.UX
+﻿using Innoactive.Creator.UX;
+using UnityEngine;
+
+namespace Innoactive.CreatorEditor.UX
 {
     /// <summary>
     /// Will be called on OnSceneSetup to add the course controller menu.
@@ -14,7 +17,10 @@
         /// <inheritdoc />
         public override void Setup()
         {
-            SetupPrefab("[COURSE_CONTROLLER]");
+            GameObject courseController = FindPrefab("[COURSE_CONTROLLER]");
+            courseController.name = courseController.name.Replace("(Clone)", string.Empty);
+            courseController.GetComponent<CourseControllerSetup>().ResetToDefault();
+            Object.Instantiate(courseController);
         }
     }
 }
