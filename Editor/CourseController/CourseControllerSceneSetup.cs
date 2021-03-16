@@ -1,4 +1,5 @@
-﻿using Innoactive.Creator.UX;
+﻿using Innoactive.Creator.Unity;
+using Innoactive.Creator.UX;
 using UnityEngine;
 
 namespace Innoactive.CreatorEditor.UX
@@ -19,7 +20,7 @@ namespace Innoactive.CreatorEditor.UX
         {
             GameObject courseController = FindPrefab("[COURSE_CONTROLLER]");
             courseController.name = courseController.name.Replace("(Clone)", string.Empty);
-            courseController.GetComponent<CourseControllerSetup>().ResetToDefault();
+            courseController.GetOrAddComponent<CourseControllerSetup>().ResetToDefault();
             Object.Instantiate(courseController);
         }
     }
