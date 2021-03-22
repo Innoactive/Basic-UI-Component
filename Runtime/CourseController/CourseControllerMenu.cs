@@ -85,11 +85,7 @@ namespace Innoactive.Creator.UX
         [SerializeField]
         private Dropdown modePicker = null;
         #endregion
-
-        [Tooltip("The two-letter ISO language code (e.g. \"EN\") of the fallback language which is used by the text to speech engine if no valid localization file is found.")]
-        [SerializeField]
-        private string fallbackLanguage = "EN";
-
+        
         protected List<string> localizationFileNames;
 
         protected string selectedLanguage;
