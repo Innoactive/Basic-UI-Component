@@ -109,30 +109,26 @@ namespace Innoactive.Creator.UX
 
         protected virtual void SetupMenu()
         {
-            // Get the current system language as default language.
-            selectedLanguage = LocalizationUtils.GetSystemLanguageAsTwoLetterIsoCode().ToUpper();
-
-            // Check if the fallback language is a valid language.
-            fallbackLanguage = fallbackLanguage.Trim();
-
-            if (fallbackLanguage.TryConvertToTwoLetterIsoCode(out string validFallbackLanguage))
-            {
-                fallbackLanguage = validFallbackLanguage;
-            }
-            // If not, use "EN" instead.
-            else
-            {
-                Debug.LogWarningFormat("'{0}' is no valid language. Changed fallback language to 'EN'.", fallbackLanguage);
-                fallbackLanguage = "EN";
-            }
-
             // Get all the available localization files for the selected training.
             localizationFileNames = FetchAvailableLocalizationsForTraining();
-            
-            if (string.IsNullOrEmpty(LanguageSettings.Instance.ActiveLanguage) == false)
+
+            if (LanguageSettings.Instance.ActiveLanguage != null)
             {
                 selectedLanguage = LanguageSettings.Instance.ActiveLanguage;
             }
+            else if (localizationFileNames.Contains(LocalizationUtils.GetSystemLanguageAsTwoLetterIsoCode().ToLower()))
+            {
+                selectedLanguage = LocalizationUtils.GetSystemLanguageAsTwoLetterIsoCode();
+                LanguageSettings.Instance.ActiveLanguage = selectedLanguage;
+            }
+            else
+            {
+                LanguageSettings.Instance.ActiveLanguage = LanguageSettings.Instance.DefaultLanguage;
+            }
+
+            // Load the localization for the current selected course.
+            LoadLocalizationForTraining(RuntimeConfigurator.Instance.GetSelectedCourse());
+            SetupTraining();
 
             // Setup UI controls.
             SetupChapterPicker();
@@ -143,9 +139,6 @@ namespace Innoactive.Creator.UX
             SetupSoundToggle();
             SetupLanguagePicker();
             SetupModePicker();
-
-            // Load the localization for the current selected course.
-            LoadLocalizationForTraining(RuntimeConfigurator.Instance.GetSelectedCourse());
 
             // Update the UI.
             SetupTrainingDependantUI();
@@ -443,19 +436,11 @@ namespace Innoactive.Creator.UX
                 {
                     selectedLanguage = supportedLanguages[languagePicker.value];
                 }
-                else if (string.IsNullOrEmpty(LanguageSettings.Instance.DefaultLanguage) == false)
+                else if (string.IsNullOrEmpty(LanguageSettings.Instance.ActiveLanguage) == false)
                 {
-                    languagePicker.AddOptions(new List<string>() { LanguageSettings.Instance.DefaultLanguage.ToUpper() });
-                }
-                // Or use the fallback language, if there is no valid localization file at all.
-                else
-                {
-                    selectedLanguage = fallbackLanguage;
-                    // Add the fallback language as option of the dropdown menu. Otherwise, the picker would be empty.
-                    languagePicker.AddOptions(new List<string>() { fallbackLanguage.ToUpper() });
+                    languagePicker.AddOptions(new List<string>() { LanguageSettings.Instance.ActiveLanguage.ToUpper() });
                 }
             }
-
 
             // When the selected language is changed, setup a training from scratch.
             languagePicker.onValueChanged.AddListener(itemIndex =>
