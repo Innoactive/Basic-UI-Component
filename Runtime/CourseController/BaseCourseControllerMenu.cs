@@ -5,10 +5,20 @@ using UnityEngine;
 
 namespace Innoactive.Creator.UX
 {
+    /// <summary>
+    /// Base class for the course controller menu.
+    /// </summary>
     public abstract class BaseCourseControllerMenu : MonoBehaviour
     {
+        /// <summary>
+        /// Localized file names.
+        /// </summary>
         protected List<string> localizationFileNames = null;
         
+        /// <summary>
+        /// Returns all available localizations for the active training.
+        /// </summary>
+        /// <returns></returns>
         protected virtual List<string> FetchAvailableLocalizationsForTraining()
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
@@ -16,6 +26,10 @@ namespace Innoactive.Creator.UX
             return LocalizationUtils.FindAvailableLanguagesForConfig(GetLocalizationConfig(), parameters);
         }
         
+        /// <summary>
+        /// Returns the language which should be selected right now.
+        /// </summary>
+        /// <returns></returns>
         protected virtual string GetSelectedLanguage()
         {
             if (string.IsNullOrEmpty(LanguageSettings.Instance.ActiveLanguage) == false)
@@ -35,6 +49,9 @@ namespace Innoactive.Creator.UX
             return LanguageSettings.Instance.DefaultLanguage;
         }
         
+        /// <summary>
+        /// Returns the used <see cref="LocalizationConfig"/>.
+        /// </summary>
         protected virtual LocalizationConfig GetLocalizationConfig()
         {
             ICourseController controller = FindObjectOfType<CourseControllerSetup>().CurrentCourseController;
