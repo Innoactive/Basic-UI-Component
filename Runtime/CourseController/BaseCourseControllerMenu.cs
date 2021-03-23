@@ -10,11 +10,25 @@ namespace Innoactive.Creator.UX
     /// </summary>
     public abstract class BaseCourseControllerMenu : MonoBehaviour
     {
+        private List<string> localizationFileNames;
+        
         /// <summary>
         /// Localized file names.
         /// </summary>
-        protected List<string> localizationFileNames = null;
-        
+        protected List<string> LocalizationFileNames
+        {
+            get
+            {
+                if (localizationFileNames == null)
+                {
+                    localizationFileNames = FetchAvailableLocalizationsForTraining();
+                }
+
+                return localizationFileNames;
+            }
+            set => localizationFileNames = value;
+        }
+
         /// <summary>
         /// Returns all available localizations for the active training.
         /// </summary>
@@ -37,12 +51,7 @@ namespace Innoactive.Creator.UX
                 return LanguageSettings.Instance.ActiveLanguage;
             }
 
-            if (localizationFileNames == null)
-            {
-                localizationFileNames = FetchAvailableLocalizationsForTraining();
-            }
-            
-            if (localizationFileNames.Contains(LocalizationUtils.GetSystemLanguageAsTwoLetterIsoCode().ToLower()))
+            if (LocalizationFileNames.Contains(LocalizationUtils.GetSystemLanguageAsTwoLetterIsoCode().ToLower()))
             {
                 return LocalizationUtils.GetSystemLanguageAsTwoLetterIsoCode();
             }

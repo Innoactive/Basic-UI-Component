@@ -195,7 +195,7 @@ namespace Innoactive.Creator.UX
 
             LanguageSettings.Instance.ActiveLanguage = selectedLanguage;
             // Find the correct file name of the current selected language.
-            string language = localizationFileNames.Find(f => string.Equals(f, selectedLanguage, StringComparison.CurrentCultureIgnoreCase));
+            string language = LocalizationFileNames.Find(f => string.Equals(f, selectedLanguage, StringComparison.CurrentCultureIgnoreCase));
             
             Localization.LoadLocalization(GetLocalizationConfig(), language, course);
         }
@@ -354,7 +354,7 @@ namespace Innoactive.Creator.UX
             List<string> supportedLanguages = new List<string>();
 
             // Add each language in capital letters to the list of supported languages.
-            foreach (string file in localizationFileNames)
+            foreach (string file in LocalizationFileNames)
             {
                 supportedLanguages.Add(file.ToUpper());
             }

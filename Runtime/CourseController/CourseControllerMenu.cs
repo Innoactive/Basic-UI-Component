@@ -222,14 +222,14 @@ namespace Innoactive.Creator.UX
             CourseRunner.Initialize(trainingCourse);
         }
 
-
         protected virtual void LoadLocalizationForTraining(string coursePath)
         {
             string course = Path.GetFileNameWithoutExtension(coursePath);
 
             LanguageSettings.Instance.ActiveLanguage = selectedLanguage;
+
             // Find the correct file name of the current selected language.
-            string language = localizationFileNames.Find(f => string.Equals(f, selectedLanguage, StringComparison.CurrentCultureIgnoreCase));
+            string language = LocalizationFileNames.Find(f => string.Equals(f, selectedLanguage, StringComparison.CurrentCultureIgnoreCase));
             
             Localization.LoadLocalization(GetLocalizationConfig(), language, course);
         }
@@ -377,7 +377,7 @@ namespace Innoactive.Creator.UX
             List<string> supportedLanguages = new List<string>();
 
             // Add each language in capital letters to the list of supported languages.
-            foreach (string file in localizationFileNames)
+            foreach (string file in LocalizationFileNames)
             {
                 supportedLanguages.Add(file.ToUpper());
             }
@@ -399,10 +399,11 @@ namespace Innoactive.Creator.UX
                 {
                     selectedLanguage = supportedLanguages[languagePicker.value];
                 }
-                else if (string.IsNullOrEmpty(LanguageSettings.Instance.ActiveLanguage) == false)
+                else
                 {
-                    languagePicker.AddOptions(new List<string>() { LanguageSettings.Instance.ActiveLanguage.ToUpper() });
-                    selectedLanguage = LanguageSettings.Instance.ActiveLanguage;
+                    supportedLanguages.Add(LanguageSettings.Instance.ActiveOrDefaultLanguage.ToUpper());
+                    languagePicker.AddOptions(new List<string>() { supportedLanguages[0] });
+                    selectedLanguage = supportedLanguages[0];
                 }
             }
 
@@ -412,6 +413,10 @@ namespace Innoactive.Creator.UX
                 // Set the supported language based on the user selection.
                 selectedLanguage = supportedLanguages[itemIndex];
                 LanguageSettings.Instance.ActiveLanguage = selectedLanguage;
+                
+                languagePicker.value = itemIndex;
+                languagePicker.RefreshShownValue();
+                
                 // Load the training and localize it to the selected language.
                 LoadLocalizationForTraining(RuntimeConfigurator.Instance.GetSelectedCourse());
                 SetupTraining();
