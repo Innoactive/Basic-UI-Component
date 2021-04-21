@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Innoactive.Creator.Core.Configuration;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Innoactive.Creator.UX
 {
@@ -25,13 +27,16 @@ namespace Innoactive.Creator.UX
         /// <inheritdoc />
         public override List<Type> GetRequiredSetupComponents()
         {
-            return new List<Type> {typeof(CourseMenuSpawner)};
+            return new List<Type> {typeof(CourseMenuSpawner), typeof(PlayerInput)};
         }
 
         /// <inheritdoc />
         public override void HandlePostSetup(GameObject courseControllerObject)
         {
             courseControllerObject.GetComponent<CourseMenuSpawner>().SetDefaultPrefab(GetCourseMenuPrefab());
+            PlayerInput playerInput = courseControllerObject.GetComponent<PlayerInput>();
+            playerInput.actions = RuntimeConfigurator.Configuration.CurrentInputActionAsset;
+            playerInput.defaultControlScheme = "Keyboard&Mouse";
         }
     }
 }

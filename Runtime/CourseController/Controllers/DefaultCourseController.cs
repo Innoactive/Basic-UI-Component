@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Innoactive.Creator.Core.Configuration;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -29,20 +29,8 @@ namespace Innoactive.Creator.UX
         {
             List<Type> requiredSetupComponents = base.GetRequiredSetupComponents();
             requiredSetupComponents.Add(typeof(SpectatorController));
-#if ENABLE_INPUT_SYSTEM
             requiredSetupComponents.Add(typeof(PlayerInput));
-#endif
             return requiredSetupComponents;
-        }
-
-        public override void HandlePostSetup(GameObject courseControllerObject)
-        {
-            base.HandlePostSetup(courseControllerObject);
-#if ENABLE_INPUT_SYSTEM
-            PlayerInput playerInput = courseControllerObject.GetComponent<PlayerInput>();
-            playerInput.actions = SpectatorSettings.Instance.KeyBindingSettings;
-            playerInput.defaultControlScheme = "Keyboard&Mouse";
-#endif
         }
     }
 }
