@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Innoactive.Creator.Core.Configuration;
-#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
-#endif
 
 namespace Innoactive.Creator.UX
 {
