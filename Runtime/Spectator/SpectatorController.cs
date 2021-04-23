@@ -24,10 +24,9 @@ namespace Innoactive.Creator.UX
             UnregisterInputEvent(ToggleOverlay);
         }
 
-        public bool ToggleOverlay(InputAction.CallbackContext value)
+        protected void ToggleOverlay(InputAction.CallbackContext value)
         {
             ToggleUIOverlayVisibility?.Invoke(this, new EventArgs());
-            return false;
         }
     }
 }

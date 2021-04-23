@@ -27,7 +27,7 @@ namespace Innoactive.Creator.UX
         /// <inheritdoc />
         public override List<Type> GetRequiredSetupComponents()
         {
-            return new List<Type> {typeof(CourseMenuSpawner), typeof(PlayerInput)};
+            return new List<Type> {typeof(CourseMenuSpawner)};
         }
 
         /// <inheritdoc />
