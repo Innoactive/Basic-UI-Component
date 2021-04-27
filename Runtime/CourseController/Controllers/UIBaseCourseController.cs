@@ -35,8 +35,11 @@ namespace Innoactive.Creator.UX
         {
             courseControllerObject.GetComponent<CourseMenuSpawner>().SetDefaultPrefab(GetCourseMenuPrefab());
             PlayerInput playerInput = courseControllerObject.GetComponent<PlayerInput>();
-            playerInput.actions = RuntimeConfigurator.Configuration.CurrentInputActionAsset;
-            playerInput.defaultControlScheme = "Keyboard&Mouse";
+            if (playerInput != null) 
+            {
+                playerInput.actions = RuntimeConfigurator.Configuration.CurrentInputActionAsset;
+                playerInput.defaultControlScheme = "Keyboard&Mouse";
+            }
         }
     }
 }
