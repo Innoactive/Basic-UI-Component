@@ -154,7 +154,10 @@ namespace Innoactive.Creator.UX
             }
         }
 
-        private void SubscribeToControllerEvents()
+        /// <summary>
+        /// Subscribes to events of the course controller.
+        /// </summary>
+        protected virtual void SubscribeToControllerEvents()
         {
             spectatorController = FindObjectOfType<SpectatorController>();
             if (spectatorController != null)
@@ -163,7 +166,10 @@ namespace Innoactive.Creator.UX
             }
         }
 
-        private void UnsubscribeFromControllerEvents()
+        /// <summary>
+        /// Unsubscribes from events of the course controller.
+        /// </summary>
+        protected virtual void UnsubscribeFromControllerEvents()
         {
             if (spectatorController != null)
             {
@@ -171,18 +177,29 @@ namespace Innoactive.Creator.UX
             }
         }
         
+        /// <summary>
+        /// Subscribes to course events.
+        /// </summary>
         protected virtual void SubscribeToCourseEvents()
         {
             CourseRunner.Events.CourseStarted += OnCourseStarted;
             CourseRunner.Events.CourseFinished += OnCourseFinished;
         }
         
+        /// <summary>
+        /// Unsubscribes from course events.
+        /// </summary>
         protected virtual void UnsubscribeToCourseEvents()
         {
             CourseRunner.Events.CourseStarted -= OnCourseStarted;
             CourseRunner.Events.CourseFinished -= OnCourseFinished;
         }
         
+        /// <summary>
+        /// Is called when the course started event is triggered.
+        /// </summary>
+        /// <param name="sender">Sender of the event.</param>
+        /// <param name="courseEventArgs">Course event arguments.</param>
         protected virtual void OnCourseStarted(object sender, CourseEventArgs courseEventArgs)
         {
             // Show the skip step button instead of the start button.
@@ -195,6 +212,11 @@ namespace Innoactive.Creator.UX
             languagePicker.interactable = false;
         }
         
+        /// <summary>
+        /// Is called when the course finished event is triggered.
+        /// </summary>
+        /// <param name="sender">Sender of the event.</param>
+        /// <param name="courseEventArgs">Course event arguments.</param>
         protected virtual void OnCourseFinished(object sender, CourseEventArgs courseEventArgs)
         {
             skipStepPicker.gameObject.SetActive(false);
