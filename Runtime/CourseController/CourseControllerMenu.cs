@@ -288,30 +288,8 @@ namespace Innoactive.Creator.UX
 
         private void SetupStartTrainingButton()
         {
-            // When user clicks on Start Training button,
-            startTrainingButton.onClick.AddListener(() =>
+            CourseRunner.Events.CourseStarted += (sender, args) =>
             {
-                if (CourseRunner.Current == null)
-                {
-                    Debug.LogError("No training course is selected.", RuntimeConfigurator.Instance.gameObject);
-                    return;
-                }
-
-                // Subscribe to the "stage changed" event of the current training in order to change the skip step button to the start button after finishing the training.
-                CourseRunner.Current.LifeCycle.StageChanged += (sender, args) =>
-                {
-                    if (args.Stage == Stage.Inactive)
-                    {
-                        skipStepPicker.gameObject.SetActive(false);
-                        startTrainingButton.gameObject.SetActive(true);
-                    }
-                };
-
-                //Skip all chapters before selected.
-                FastForwardChapters(chapterPicker.value);
-
-                // Start the training
-                CourseRunner.Run();
 
                 // Show the skip step button instead of the start button.
                 skipStepPicker.gameObject.SetActive(true);
@@ -321,6 +299,34 @@ namespace Innoactive.Creator.UX
                 startTrainingButton.interactable = false;
                 // Disable the language picker as it is not allowed to change the language during the training's execution.
                 languagePicker.interactable = false;
+            };
+            
+            // Subscribe to the "stage changed" event of the current training in order to change the skip step button to the start button after finishing the training.
+            CourseRunner.Current.LifeCycle.StageChanged += (sender, args) =>
+            {
+                if (args.Stage == Stage.Inactive)
+                {
+                    skipStepPicker.gameObject.SetActive(false);
+                    startTrainingButton.gameObject.SetActive(true);
+                }
+            };
+            
+            // When user clicks on Start Training button,
+            startTrainingButton.onClick.AddListener(() =>
+            {
+                if (CourseRunner.Current == null)
+                {
+                    Debug.LogError("No training course is selected.", RuntimeConfigurator.Instance.gameObject);
+                    return;
+                }
+
+                //Skip all chapters before selected.
+                FastForwardChapters(chapterPicker.value);
+
+                // Start the training
+                CourseRunner.Run();
+
+                
             });
         }
 
