@@ -125,11 +125,15 @@ namespace Innoactive.Creator.UX
 
             // Subscribe to controller events.
             SubscribeToControllerEvents();
+
+            // Subscribe to course events.
+            SubscribeToCourseEvents();
         }
 
         protected virtual void OnDisable()
         {
             UnsubscribeFromControllerEvents();
+            UnsubscribeToCourseEvents();
         }
 
         protected virtual void Update()
@@ -165,6 +169,36 @@ namespace Innoactive.Creator.UX
             {
                 spectatorController.ToggleUIOverlayVisibility -= ToggleUIVisibility;
             }
+        }
+        
+        protected virtual void SubscribeToCourseEvents()
+        {
+            CourseRunner.Events.CourseStarted += OnCourseStarted;
+            CourseRunner.Events.CourseFinished += OnCourseFinished;
+        }
+        
+        protected virtual void UnsubscribeToCourseEvents()
+        {
+            CourseRunner.Events.CourseStarted -= OnCourseStarted;
+            CourseRunner.Events.CourseFinished -= OnCourseFinished;
+        }
+        
+        protected virtual void OnCourseStarted(object sender, CourseEventArgs courseEventArgs)
+        {
+            // Show the skip step button instead of the start button.
+            skipStepPicker.gameObject.SetActive(true);
+            startTrainingButton.gameObject.SetActive(false);
+
+            // Disable button as you have to reset scene before starting the training again.
+            startTrainingButton.interactable = false;
+            // Disable the language picker as it is not allowed to change the language during the training's execution.
+            languagePicker.interactable = false;
+        }
+        
+        protected virtual void OnCourseFinished(object sender, CourseEventArgs courseEventArgs)
+        {
+            skipStepPicker.gameObject.SetActive(false);
+            startTrainingButton.gameObject.SetActive(true);
         }
 
         private void ToggleUIVisibility(object sender, EventArgs args)
@@ -288,29 +322,6 @@ namespace Innoactive.Creator.UX
 
         private void SetupStartTrainingButton()
         {
-            CourseRunner.Events.CourseStarted += (sender, args) =>
-            {
-
-                // Show the skip step button instead of the start button.
-                skipStepPicker.gameObject.SetActive(true);
-                startTrainingButton.gameObject.SetActive(false);
-
-                // Disable button as you have to reset scene before starting the training again.
-                startTrainingButton.interactable = false;
-                // Disable the language picker as it is not allowed to change the language during the training's execution.
-                languagePicker.interactable = false;
-            };
-            
-            // Subscribe to the "stage changed" event of the current training in order to change the skip step button to the start button after finishing the training.
-            CourseRunner.Current.LifeCycle.StageChanged += (sender, args) =>
-            {
-                if (args.Stage == Stage.Inactive)
-                {
-                    skipStepPicker.gameObject.SetActive(false);
-                    startTrainingButton.gameObject.SetActive(true);
-                }
-            };
-            
             // When user clicks on Start Training button,
             startTrainingButton.onClick.AddListener(() =>
             {
