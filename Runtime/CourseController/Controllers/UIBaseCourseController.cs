@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Innoactive.Creator.Core.Configuration;
+using Innoactive.Creator.Core.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,7 +33,7 @@ namespace Innoactive.Creator.UX
         /// <inheritdoc />
         public override List<Type> GetRequiredSetupComponents()
         {
-            return new List<Type> {typeof(CourseMenuSpawner), typeof(InputControl), typeof(PlayerInput)};
+            return new List<Type> {typeof(CourseMenuSpawner), typeof(InputController), typeof(PlayerInput)};
         }
 
         /// <inheritdoc />
