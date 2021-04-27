@@ -32,7 +32,7 @@ namespace Innoactive.Creator.UX
         /// <inheritdoc />
         public override List<Type> GetRequiredSetupComponents()
         {
-            return new List<Type> {typeof(CourseMenuSpawner)};
+            return new List<Type> {typeof(CourseMenuSpawner), typeof(InputControl), typeof(PlayerInput)};
         }
 
         /// <inheritdoc />
@@ -40,8 +40,9 @@ namespace Innoactive.Creator.UX
         {
             courseControllerObject.GetComponent<CourseMenuSpawner>().SetDefaultPrefab(GetCourseMenuPrefab());
             PlayerInput playerInput = courseControllerObject.GetComponent<PlayerInput>();
-            if (playerInput != null) 
+            if (playerInput != null)
             {
+                playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
                 playerInput.actions = RuntimeConfigurator.Configuration.CurrentInputActionAsset;
                 playerInput.defaultControlScheme = ControlScheme;
             }
