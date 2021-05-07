@@ -29,7 +29,7 @@ namespace Innoactive.Creator.UX
             }
             catch (Exception exception)
             {
-                Debug.LogError($"Error when loading training course. {exception.GetType().Name}, {exception.Message}\n{exception.StackTrace}", RuntimeConfigurator.Instance.gameObject);
+                Debug.LogError($"Error when loading training course from '{coursePath}' {exception.GetType().Name}, {exception.Message}\n{exception.StackTrace}", RuntimeConfigurator.Instance.gameObject);
                 return;
             }
 

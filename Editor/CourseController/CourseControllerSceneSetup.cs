@@ -1,5 +1,6 @@
 ﻿using Innoactive.Creator.Unity;
 using Innoactive.Creator.UX;
+using UnityEditor;
 using UnityEngine;
 
 namespace Innoactive.CreatorEditor.UX
@@ -23,6 +24,12 @@ namespace Innoactive.CreatorEditor.UX
             {
                 courseController.GetOrAddComponent<CourseControllerSetup>().ResetToDefault();
             }
+
+            if (courseController == null)
+            {
+                courseController = GameObject.Find("[COURSE_CONTROLLER]");
+            }
+            Selection.activeGameObject = courseController;
         }
     }
 }
