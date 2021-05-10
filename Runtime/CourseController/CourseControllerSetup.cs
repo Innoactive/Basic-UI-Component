@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Innoactive.Creator.Core.Utils;
+using UnityEditor;
+using UnityEngine.SceneManagement;
 
 namespace Innoactive.Creator.UX
 {
@@ -15,19 +17,19 @@ namespace Innoactive.Creator.UX
 #pragma warning disable 0649
         [SerializeField, SerializeReference]
         private string courseControllerQualifiedName;
-        
+
         [SerializeField, SerializeReference]
         private bool useCustomPrefab;
-        
+
         [SerializeField, SerializeReference]
         private GameObject customPrefab;
 #pragma warning restore 0649
-        
+
         /// <summary>
         /// Current used course controller.
         /// </summary>
         public ICourseController CurrentCourseController { get; protected set; }
-        
+
         /// <summary>
         /// Enforced course controller will be use.
         /// </summary>
@@ -56,9 +58,9 @@ namespace Innoactive.Creator.UX
                 Instantiate(customPrefab);
                 return;
             }
-            
+
             ICourseController defaultCourseController = GetCourseControllerFromType();
-            
+
             if (CurrentCourseController == null)
             {
                 CurrentCourseController = defaultCourseController;
@@ -72,7 +74,7 @@ namespace Innoactive.Creator.UX
             {
                 RemoveComponents(defaultCourseController.GetRequiredSetupComponents().Except(CurrentCourseController.GetRequiredSetupComponents()).ToList());
             }
-            
+
             GameObject courseControllerPrefab = CurrentCourseController.GetCourseControllerPrefab();
             if (courseControllerPrefab != null)
             {
@@ -94,7 +96,7 @@ namespace Innoactive.Creator.UX
             {
                 return RetrieveDefaultControllerType();
             }
-            
+
             Type courseControllerType = ReflectionUtils.GetTypeFromAssemblyQualifiedName(courseControllerQualifiedName);
             return courseControllerType != null ? courseControllerType : RetrieveDefaultControllerType();
         }
@@ -128,7 +130,23 @@ namespace Innoactive.Creator.UX
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Workaround to set the focus to the CourseControllerSetup if it has missing components that are required by the CourseController.
+        /// </summary>
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnScriptsReloaded()
+        {
+            CourseControllerSetup setup = FindObjectOfType<CourseControllerSetup>();
+            List<Type> currentTypes = setup.GetComponents<Component>().Select(c => c.GetType()).ToList();
+            ICourseController cc = setup.GetCourseControllerFromType();
+            bool courseControllerHasMissingComponents = !currentTypes.Except(cc.GetRequiredSetupComponents()).Any();
+            if (courseControllerHasMissingComponents)
+            {
+                Selection.activeObject = setup;
+            }
+        }
+
         /// <summary>
         /// Enforces the given controller to be used, if possible.
         /// </summary>
