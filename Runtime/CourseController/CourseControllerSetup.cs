@@ -131,22 +131,6 @@ namespace Innoactive.Creator.UX
         }
 
         /// <summary>
-        /// Workaround to set the focus to the CourseControllerSetup if it has missing components that are required by the CourseController.
-        /// </summary>
-        [UnityEditor.Callbacks.DidReloadScripts]
-        private static void OnScriptsReloaded()
-        {
-            CourseControllerSetup setup = FindObjectOfType<CourseControllerSetup>();
-            List<Type> currentTypes = setup.GetComponents<Component>().Select(c => c.GetType()).ToList();
-            ICourseController cc = setup.GetCourseControllerFromType();
-            bool courseControllerHasMissingComponents = currentTypes.Except(cc.GetRequiredSetupComponents()).Any();
-            if (courseControllerHasMissingComponents)
-            {
-                Selection.activeObject = setup;
-            }
-        }
-
-        /// <summary>
         /// Enforces the given controller to be used, if possible.
         /// </summary>
         /// <param name="courseController">Controller to be used.</param>
@@ -166,5 +150,23 @@ namespace Innoactive.Creator.UX
             Type courseControllerType = RetrieveDefaultControllerType();
             courseControllerQualifiedName = courseControllerType.Name;
         }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Workaround to set the focus to the CourseControllerSetup if it has missing components that are required by the CourseController.
+        /// </summary>
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnScriptsReloaded()
+        {
+            CourseControllerSetup setup = FindObjectOfType<CourseControllerSetup>();
+            List<Type> currentTypes = setup.GetComponents<Component>().Select(c => c.GetType()).ToList();
+            ICourseController cc = setup.GetCourseControllerFromType();
+            bool courseControllerHasMissingComponents = currentTypes.Except(cc.GetRequiredSetupComponents()).Any();
+            if (courseControllerHasMissingComponents)
+            {
+                Selection.activeObject = setup;
+            }
+        }
+#endif
     }
 }
