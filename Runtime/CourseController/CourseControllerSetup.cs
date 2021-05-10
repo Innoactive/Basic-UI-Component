@@ -140,7 +140,7 @@ namespace Innoactive.Creator.UX
             CourseControllerSetup setup = FindObjectOfType<CourseControllerSetup>();
             List<Type> currentTypes = setup.GetComponents<Component>().Select(c => c.GetType()).ToList();
             ICourseController cc = setup.GetCourseControllerFromType();
-            bool courseControllerHasMissingComponents = !currentTypes.Except(cc.GetRequiredSetupComponents()).Any();
+            bool courseControllerHasMissingComponents = currentTypes.Except(cc.GetRequiredSetupComponents()).Any();
             if (courseControllerHasMissingComponents)
             {
                 Selection.activeObject = setup;
