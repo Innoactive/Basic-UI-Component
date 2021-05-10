@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using Innoactive.Creator.Core.Utils;
 using UnityEditor;
-using UnityEngine.SceneManagement;
 
 namespace Innoactive.Creator.UX
 {
