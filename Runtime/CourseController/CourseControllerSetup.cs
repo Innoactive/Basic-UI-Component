@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Innoactive.Creator.Core.Utils;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace Innoactive.Creator.UX
 {
