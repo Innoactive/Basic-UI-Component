@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Innoactive.Creator.Core.Utils;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 #endif
 
 namespace Innoactive.Creator.UX
@@ -155,19 +157,39 @@ namespace Innoactive.Creator.UX
 
 #if UNITY_EDITOR
         /// <summary>
-        /// Workaround to set the focus to the CourseControllerSetup if it has missing components that are required by the CourseController.
+        /// Static handler which helps with updating from older to newer Creator versions.
         /// </summary>
-        [UnityEditor.Callbacks.DidReloadScripts]
-        private static void OnScriptsReloaded()
+        [InitializeOnLoad]
+        private static class UpdateCreatorVersionHandler
         {
-            CourseControllerSetup setup = FindObjectOfType<CourseControllerSetup>();
-            List<Type> currentTypes = setup.GetComponents<Component>().Select(c => c.GetType()).ToList();
-            ICourseController courseController = setup.GetCourseControllerFromType();
-            bool courseControllerHasMissingComponents = courseController.GetRequiredSetupComponents().Except(currentTypes).Any();
-            if (courseControllerHasMissingComponents)
+            static UpdateCreatorVersionHandler()
             {
-                Selection.activeObject = setup;
-                Debug.LogWarning($"Automatically added missing required components to {setup}.");
+                EditorSceneManager.sceneOpened += SceneOpenedCallback;
+            }
+
+            static void SceneOpenedCallback(Scene scene, OpenSceneMode mode)
+            {
+                SetupCourseController();
+            }
+
+            /// <summary>
+            /// Workaround to set the focus to the CourseControllerSetup if it has missing components that are required by the CourseController.
+            /// </summary>
+            private static void SetupCourseController()
+            {
+                CourseControllerSetup setup = FindObjectOfType<CourseControllerSetup>();
+                if (setup == null)
+                {
+                    return;
+                }
+                List<Type> currentTypes = setup.GetComponents<Component>().Select(c => c.GetType()).ToList();
+                ICourseController courseController = setup.GetCourseControllerFromType();
+                bool courseControllerHasMissingComponents = courseController.GetRequiredSetupComponents().Except(currentTypes).Any();
+                if (courseControllerHasMissingComponents)
+                {
+                    Selection.activeObject = setup;
+                    Debug.LogWarning($"Automatically added missing required components to {setup}.");
+                }
             }
         }
 #endif
