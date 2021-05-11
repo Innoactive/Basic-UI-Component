@@ -160,11 +160,12 @@ namespace Innoactive.Creator.UX
         {
             CourseControllerSetup setup = FindObjectOfType<CourseControllerSetup>();
             List<Type> currentTypes = setup.GetComponents<Component>().Select(c => c.GetType()).ToList();
-            ICourseController cc = setup.GetCourseControllerFromType();
-            bool courseControllerHasMissingComponents = currentTypes.Except(cc.GetRequiredSetupComponents()).Any();
+            ICourseController courseController = setup.GetCourseControllerFromType();
+            bool courseControllerHasMissingComponents = courseController.GetRequiredSetupComponents().Except(currentTypes).Any();
             if (courseControllerHasMissingComponents)
             {
                 Selection.activeObject = setup;
+                Debug.LogWarning($"Automatically added missing required components to {setup}.");
             }
         }
 #endif
